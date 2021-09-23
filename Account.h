@@ -46,13 +46,13 @@ public:
 	std::string getLastName();
 	void setLastName(std::string lastName);
 
-	const u_short* getMathScore();
+	u_short getMathScore();
 	void setMathScore(u_short mathScore);
-	const u_short* getRuLangScore();
+	u_short getRuLangScore();
 	void setRuLangScore(u_short ruLangScore);
-	const u_short* getEnLangScore();
+	u_short getEnLangScore();
 	void setEnLangScore(u_short enLangScore);
-	const u_short getTotalScore();
+	u_short getTotalScore();
 };
 
 #endif // ACCOUNT_H

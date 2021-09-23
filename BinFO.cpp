@@ -32,9 +32,9 @@ void CreateRandomBinDataset(std::string dir)
 
 		outBinFile.write(users.getFirstNameChar(), sizeof(*users.getFirstNameChar()) * LENGTH_FIRST_NAME);
 		outBinFile.write(users.getLastNameChar(), sizeof(*users.getFirstNameChar()) * LENGTH_LAST_NAME);
-		outBinFile.write(reinterpret_cast<char*>(*users.getMathScore()), sizeof(users.getMathScore()));
-		outBinFile.write(reinterpret_cast<char*>(*users.getRuLangScore()), sizeof(users.getRuLangScore()));
-		outBinFile.write(reinterpret_cast<char*>(*users.getEnLangScore()), sizeof(users.getEnLangScore()));
+		outBinFile.write(reinterpret_cast<char*>(users.getMathScore()), sizeof(users.getMathScore()));
+		outBinFile.write(reinterpret_cast<char*>(users.getRuLangScore()), sizeof(users.getRuLangScore()));
+		outBinFile.write(reinterpret_cast<char*>(users.getEnLangScore()), sizeof(users.getEnLangScore()));
 
 		//cout << i + 1 << " " << setw(FIRST_NAME_FIELD_WIDTH) << users.firstName << " " << setw(LAST_NAME_FIELD_WIDTH) 
 		//	<< users.lastName << " " << setw(MATCH_SCORE_FIELD_WIDTH) << users.mathScore <<

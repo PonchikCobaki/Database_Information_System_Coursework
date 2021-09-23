@@ -75,31 +75,31 @@ void Account::setLastName(std::string lastName) {
 	_lastName = lastName;
 }
 
-const u_short* Account::getMathScore() {
-	return &_mathScore;
+u_short Account::getMathScore() {
+	return _mathScore;
 }
 
 void Account::setMathScore(u_short mathScore) {
 	_mathScore = mathScore;
 }
 
-const u_short* Account::getRuLangScore() {
-	return &_ruLangScore;
+u_short Account::getRuLangScore() {
+	return _ruLangScore;
 }
 
 void Account::setRuLangScore(u_short ruLangScore) {
 	_ruLangScore = ruLangScore;
 }
 
-const u_short* Account::getEnLangScore() {
-	return &_enLangScore;
+u_short Account::getEnLangScore() {
+	return _enLangScore;
 }
 
 void Account::setEnLangScore(u_short enLangScore) {
 	_enLangScore = enLangScore;
 }
 
-const u_short Account::getTotalScore() {
+u_short Account::getTotalScore() {
 
 	return _mathScore + _ruLangScore + _enLangScore;
 }
