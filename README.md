@@ -7,7 +7,7 @@
 ----- |------- | --------- | --------- | --------- | --------- | ------------
 1     |Ponchik | Cobaki    | 100 | 100 | 100 | 300
 
-![Image of table](table.png)
+![Image of table](image/table.png)
 
 ## Функции:
 - просмотр файла бызы
@@ -16,7 +16,7 @@
 - измениение учетной записи
 - просмотр статистики
 
-![Image of menu](menu.png)
+![Image of menu](image/menu.png)
 
 
 ## Объявления
