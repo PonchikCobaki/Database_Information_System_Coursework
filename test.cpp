@@ -7,9 +7,9 @@ int main()
 {
     using namespace std;
     setlocale(LC_ALL, "ru");
-    Account User;
-    Account User2("Никита", "Цветков", 70);
-    Account User3("Иван", "Поляков", 2, 55, 6);
+    my::Account User;
+    my::Account User2("Никита", "Цветков", 70);
+    my::Account User3("Иван", "Поляков", 2, 55, 6);
 
     cout << "User" << endl;
     std::cout << "Имя: " << User.getFirstName() << " ";
@@ -35,7 +35,6 @@ int main()
     std::cout << User3.getEnLangScore() << " ";
     std::cout << User3.getTotalScore() << std::endl;
 
-    //User = User2;
 
     //cout << "User = User2" << endl;
     //std::cout << "Имя: " << User.getFirstName() << " ";
@@ -45,45 +44,19 @@ int main()
     //std::cout << User.getEnLangScore() << " ";
     //std::cout << User.getTotalScore() << std::endl;
 
-    std::cout << "----------------------------------------" << std::endl;
-    Array Exam(3);
-    Exam[0] = User2;
-    Exam[1] = User2;
-    Exam[2] = User3;
-    std::cout << "----------------------------------------" << std::endl;
-    for (short i = 0; i < Exam.getSize(); ++i) {
-        cout << "№" << i << endl;
-        std::cout << "Имя: " << Exam[i].getFirstName() << " ";
-        std::cout << "Фамилия: " << Exam[i].getLastName() << " ";
-        std::cout << Exam[i].getMathScore() << " ";
-        std::cout << Exam[i].getRuLangScore() << " ";
-        std::cout << Exam[i].getEnLangScore() << " ";
-        std::cout << Exam[i].getTotalScore() << std::endl;
+    //Exam.append(1, my::Account("Петр", "Иванов", 55, 66));
+
+    //Exam[0] = my::Account("Никита", "Цветков", 70, 69, 65);
+
+    my::Array Exam;
+
+    for (int i = 0; i < 5; ++i) {
+        Exam.pushBack(User2);
     }
-
-    Exam.append(1, Account("Петр", "Иванов", 55, 66));
-    Exam.append(2, User);
-
-    Exam[0] = Account("Никита", "Цветков", 70, 69, 65);
+    Exam.append(Exam.getSize() - 1, User3);
     std::cout << "----------------------------------------" << std::endl;
-    for (short i = 0; i < Exam.getSize(); ++i) {
-        cout << "№" << i << endl;
-        std::cout << "Имя: " << Exam[i].getFirstName() << " ";
-        std::cout << "Фамилия: " << Exam[i].getLastName() << " ";
-        std::cout << Exam[i].getMathScore() << " ";
-        std::cout << Exam[i].getRuLangScore() << " ";
-        std::cout << Exam[i].getEnLangScore() << " ";
-        std::cout << Exam[i].getTotalScore() << std::endl;
-    }
-
-    Exam.del(0);
-    Exam.del(0);
-    Exam.del(0);
-    Exam.del(0);
-
+    std::cout << "extend array" << std::endl;
     cout << "size: " << Exam.getSize() << endl;
-    
-    std::cout << "----------------------------------------" << std::endl;
     for (short i = 0; i < Exam.getSize(); ++i) {
         cout << "№" << i << endl;
         std::cout << "Имя: " << Exam[i].getFirstName() << " ";

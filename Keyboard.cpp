@@ -1,4 +1,10 @@
 #include "Keyboard.h"
+#include "Array.h"
+
+#include <conio.h>
+#include <string>
+#include <sstream>
+#include <iostream>
 
 // функция чтения клавиш клавиатуры
 u_short ButtonsReading(u_int& horPosOut, u_int& vertPosOut)
@@ -45,7 +51,7 @@ u_short ButtonsReading(u_int& horPosOut, u_int& vertPosOut)
 }
 
 // функция ввода с клавиатурыы
-void UserInput(ExamResults& userData)
+void UserInput(my::Account& userData)
 {
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
@@ -54,8 +60,6 @@ void UserInput(ExamResults& userData)
 	stringstream input;	//	поток для записи
 	string buffer;		//	буффер
 	string subBuffer;	//	буффер для чисел
-	getline(cin, buffer);
-	input << buffer;
 
 	// чтение строк
 	while (buffer.length() == 0) {
@@ -64,14 +68,17 @@ void UserInput(ExamResults& userData)
 	}
 
 	// запись строк
-	input >> userData.firstName;	
-	input >> userData.lastName;
+	string strBuffer;
+	input >> strBuffer;
+	userData.setFirstName(strBuffer);
+	input >> strBuffer;
+	userData.setLastName(strBuffer);
 
 	// запись чисел с преобразованием из строк
 	input >> subBuffer;
-	userData.mathScore = atoi(subBuffer.c_str());
+	userData.setMathScore(atoi(subBuffer.c_str()));
 	input >> subBuffer;
-	userData.ruLangScore = atoi(subBuffer.c_str());
+	userData.setRuLangScore(atoi(subBuffer.c_str()));
 	input >> subBuffer;
-	userData.enLangScore = atoi(subBuffer.c_str());
+	userData.setEnLangScore(atoi(subBuffer.c_str()));
 }

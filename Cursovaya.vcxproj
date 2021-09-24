@@ -142,12 +142,16 @@
     <ClCompile Include="Account.cpp" />
     <ClCompile Include="Array.cpp" />
     <ClCompile Include="BinFO.cpp" />
+    <ClCompile Include="CMenu.cpp" />
+    <ClCompile Include="Keyboard.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Account.h" />
     <ClInclude Include="Array.h" />
     <ClInclude Include="BinFO.h" />
+    <ClInclude Include="CMenu.h" />
+    <ClInclude Include="Keyboard.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\ТЗ.txt" />

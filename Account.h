@@ -6,53 +6,59 @@
 #include <Windows.h>
 
 
+namespace my {
 
-enum StringFieldLength	//	перечесление размеров поля имен в структуре
-{
-	LENGTH_FIRST_NAME = 25,
-	LENGTH_LAST_NAME = 25,
-};
-
-
-class Account
-{
-private:
-	void _charInit();
-	char* _firstNameCh;
-	char* _lastNameCh;
-
-	std::string _firstName;
-	std::string _lastName;
-	u_short _mathScore;
-	u_short _ruLangScore;
-	u_short _enLangScore;
-
-public:
-	Account();
-	Account(std::string firstName, std::string lastName,
-		u_short mathScore = 0, u_short ruLangScore = 0, u_short enLangScore = 0);
-
-	~Account();
+	enum StringFieldLength	//	перечесление размеров поля имен в структуре
+	{
+		LENGTH_FIRST_NAME = 25,
+		LENGTH_LAST_NAME = 25,
+	};
 
 
-	void operator= (Account& user);
-	void operator= (const Account& user);
+	class Account
+	{
+	private:
+		void m_charInit();
+		char* m_firstNameCh;
+		char* m_lastNameCh;
 
-	char* getFirstNameChar();
-	char* getLastNameChar();
+		std::string m_firstName;
+		std::string m_lastName;
+		uint16_t m_mathScore;
+		uint16_t m_ruLangScore;
+		uint16_t m_enLangScore;
+		uint16_t m_writeSize;
 
-	std::string getFirstName();
-	void setFirstName(std::string firstName);
-	std::string getLastName();
-	void setLastName(std::string lastName);
+	public:
+		Account();
+		Account(std::string firstName, std::string lastName,
+			uint16_t mathScore = 0, uint16_t ruLangScore = 0, uint16_t enLangScore = 0);
 
-	u_short getMathScore();
-	void setMathScore(u_short mathScore);
-	u_short getRuLangScore();
-	void setRuLangScore(u_short ruLangScore);
-	u_short getEnLangScore();
-	void setEnLangScore(u_short enLangScore);
-	u_short getTotalScore();
-};
+		~Account();
 
+
+		void operator= (Account& user);
+		void operator= (const Account& user);
+
+		char* getFirstNameChar();
+		char* getLastNameChar();
+
+		std::string getFirstName();
+		void setFirstName(std::string firstName);
+		std::string getLastName();
+		void setLastName(std::string lastName);
+
+		uint16_t getMathScore();
+		void setMathScore(uint16_t mathScore);
+		uint16_t getRuLangScore();
+		void setRuLangScore(uint16_t ruLangScore);
+		uint16_t getEnLangScore();
+		void setEnLangScore(uint16_t enLangScore);
+
+		uint16_t getTotalScore();
+		uint16_t getWriteSize();
+	};
+
+}
 #endif // ACCOUNT_H
+

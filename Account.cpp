@@ -1,107 +1,113 @@
 #include "Account.h"
 
-void Account::_charInit() {
-	_firstNameCh = new char[LENGTH_FIRST_NAME];
-	_lastNameCh = new char[LENGTH_LAST_NAME];
+
+using namespace my;
+
+void Account::m_charInit() {
+	m_firstNameCh = new char[LENGTH_FIRST_NAME];
+	m_lastNameCh = new char[LENGTH_LAST_NAME];
 }
 
 Account::Account()
 {
-	_charInit();
-	std::string _firstName = "имя не задано";
-	std::string _lastName = "фамилия не задана";
-	u_short _mathScore = 0;
-	u_short _ruLangScore = 0;
-	u_short _enLangScore = 0;
+	m_charInit();
+	std::string m_firstName = "имя не задано";
+	std::string m_lastName = "фамилия не задана";
+	uint16_t m_mathScore = 0;
+	uint16_t m_ruLangScore = 0;
+	uint16_t m_enLangScore = 0;
 	std::cout << "zero Account create" << std::endl;
 }
 Account::Account(std::string firstName,	std::string lastName,
-	u_short mathScore, u_short ruLangScore, u_short enLangScore)
-	: _firstName(firstName), _lastName(lastName),
-	_mathScore(mathScore), _ruLangScore(ruLangScore), _enLangScore(enLangScore)
+	uint16_t mathScore, uint16_t ruLangScore, uint16_t enLangScore)
+	: m_firstName(firstName), m_lastName(lastName),
+	m_mathScore(mathScore), m_ruLangScore(ruLangScore), m_enLangScore(enLangScore)
 {
-	_charInit();
+	m_charInit();
 	std::cout << "Account create" << std::endl;
 }
 
 Account::~Account() {
-	if (_firstNameCh) {
-		delete[] _firstNameCh;
+	if (m_firstNameCh) {
+		delete[] m_firstNameCh;
 	}
-	if (_firstNameCh) {
-		delete[] _lastNameCh;
+	if (m_firstNameCh) {
+		delete[] m_lastNameCh;
 	}
 	std::cout << "Account destruct\n";
 }
 
 void Account::operator= (Account& user) {
-	_firstName = user.getFirstName();
-	_lastName = user.getLastName();
-	_mathScore = user.getMathScore();
-	_ruLangScore = user.getRuLangScore();
-	_enLangScore = user.getEnLangScore();
+	m_firstName = user.getFirstName();
+	m_lastName = user.getLastName();
+	m_mathScore = user.getMathScore();
+	m_ruLangScore = user.getRuLangScore();
+	m_enLangScore = user.getEnLangScore();
 }
 void Account::operator= (const Account& user) {
-	this->_firstName = user._firstName;
-	this->_lastName = user._lastName;
-	this->_mathScore = user._mathScore;
-	this->_ruLangScore = user._ruLangScore;
-	this->_enLangScore = user._ruLangScore;
+	this->m_firstName = user.m_firstName;
+	this->m_lastName = user.m_lastName;
+	this->m_mathScore = user.m_mathScore;
+	this->m_ruLangScore = user.m_ruLangScore;
+	this->m_enLangScore = user.m_enLangScore;
 }
 
 char* Account::getFirstNameChar() {
-	strcpy_s(_firstNameCh, LENGTH_FIRST_NAME, _firstName.c_str());
-	return _firstNameCh;
+	strcpy_s(m_firstNameCh, LENGTH_FIRST_NAME, m_firstName.c_str());
+	return m_firstNameCh;
 }
 
 char* Account::getLastNameChar() {
-	strcpy_s(_lastNameCh, LENGTH_FIRST_NAME, _lastName.c_str());
-	return _lastNameCh;
+	strcpy_s(m_lastNameCh, LENGTH_FIRST_NAME, m_lastName.c_str());
+	return m_lastNameCh;
 }
 
 std::string Account::getFirstName() {
-	return _firstName;
+	return m_firstName;
 }
 
 void Account::setFirstName(std::string firstName) {
-	_firstName = firstName;
+	m_firstName = firstName;
 }
 
 std::string Account::getLastName() {
-	return _lastName;
+	return m_lastName;
 }
 
 void Account::setLastName(std::string lastName) {
-	_lastName = lastName;
+	m_lastName = lastName;
 }
 
-u_short Account::getMathScore() {
-	return _mathScore;
+uint16_t Account::getMathScore() {
+	return m_mathScore;
 }
 
-void Account::setMathScore(u_short mathScore) {
-	_mathScore = mathScore;
+void Account::setMathScore(uint16_t mathScore) {
+	m_mathScore = mathScore;
 }
 
-u_short Account::getRuLangScore() {
-	return _ruLangScore;
+uint16_t Account::getRuLangScore() {
+	return m_ruLangScore;
 }
 
-void Account::setRuLangScore(u_short ruLangScore) {
-	_ruLangScore = ruLangScore;
+void Account::setRuLangScore(uint16_t ruLangScore) {
+	m_ruLangScore = ruLangScore;
 }
 
-u_short Account::getEnLangScore() {
-	return _enLangScore;
+uint16_t Account::getEnLangScore() {
+	return m_enLangScore;
 }
 
-void Account::setEnLangScore(u_short enLangScore) {
-	_enLangScore = enLangScore;
+void Account::setEnLangScore(uint16_t enLangScore) {
+	m_enLangScore = enLangScore;
 }
 
-u_short Account::getTotalScore() {
+uint16_t Account::getTotalScore() {
 
-	return _mathScore + _ruLangScore + _enLangScore;
+	return m_mathScore + m_ruLangScore + m_enLangScore;
 }
 
+uint16_t Account::getWriteSize() {
 
+	return sizeof(uint16_t) * 3 + sizeof(char) * LENGTH_FIRST_NAME + sizeof(char) * LENGTH_LAST_NAME;
+}

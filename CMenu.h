@@ -90,17 +90,6 @@ extern MenuTemplates allMenuTemplates;
 
 #endif
 
-// указатели на соответствующие функции
-using findingCursorPositionFnc1 = void(*)(u_int& vertPosOut, const u_int& heigh);
-using findingCursorPositionFnc2 = void(*)(u_int& horPosOut, u_int& vertPosOut, const u_int& length, const u_int& height);
-using insertCursorPositionFnc	= std::string(*)(std::string str, const u_int& vertPos, const MenuTemplates& mTemps,
-									u_short level, const u_int& iterator);
-using selectionMenuPrintingFnc	= bool(*)(std::string title, insertCursorPositionFnc insCurPosFnc,
-									buttonsReadingFnc buttReadFnc, findingCursorPositionFnc1 findCurPosFnc);
-
-using printTableFnc	= void(*)(const u_int& failCount, std::string dir, std::list<ExamResults>& usersData, const MenuTemplates& mTemps,
-						insertCursorPositionFnc insCurPosFnc, buttonsReadingFnc buttReadFnc, findingCursorPositionFnc2 findCurPosFnc2);
-
 //	функция предотвращающая выход переменной верктикального указателя за пределы [V_B_P,height]
 void		FindingCursorPosition(u_int& vertPosOut, const u_int& heigh);
 
@@ -115,26 +104,38 @@ std::string InsertCursorPosition(std::string str, const u_int& vertPos, const Me
 bool		SelectionMenuPrinting(std::string title, insertCursorPositionFnc insCurPosFnc,
 				buttonsReadingFnc buttReadFnc, findingCursorPositionFnc1 findCurPosFnc);
 
-//	основное меню
-void		PrintMainMenu(const u_int& vertPos, const MenuTemplates& mTemps, insertCursorPositionFnc insCurPosFnc);
-
-// построение таблицы с функциями редактирования
-void		PrintTable(const u_int& failCount, std::string dir, std::list<ExamResults>& usersData, const MenuTemplates& mTemps,
-				insertCursorPositionFnc insCurPosFnc, buttonsReadingFnc buttReadFnc, findingCursorPositionFnc2 findCurPosFnc2);
-// упрощённая версия для построение таблицы 
-void		PrintTable(std::string dir, std::list<ExamResults>& usersData, const MenuTemplates& mTemps,
-				insertCursorPositionFnc insCurPosFnc, selectionMenuPrintingFnc selMenuPrintingFnc,
-				buttonsReadingFnc buttReadFnc, findingCursorPositionFnc1 findCurPosFnc1, findingCursorPositionFnc2 findCurPosFnc2,
-				readingBinaryFileFnc readBinFileFnc, writeInBinaryFileFnc writeInBinFileFnc,
-				deletingFromBinaryFileFnc delFromBinFileFnc, changeDataInBinaryFileFnc changeInBinFileFnc,
-				appendInBinaryFileFnc appInBinFileFnc, userInputFnc userInputFnc);
-
-// функция вычисления статискитеских данных
-void		ComputeStatistics(const u_short& pasScore, const u_short& minMathScore, const u_short& minRuLangScore,
-				const u_short& minEnLangScore, const std::string dir, std::list<ExamResults>& usersData,
-				readingBinaryFileFnc readBinFileFnc, printTableFnc printTableFnc, insertCursorPositionFnc insCurPosFnc,
-				buttonsReadingFnc buttReadFnc, findingCursorPositionFnc2 findCurPosFnc2);
-
-// функция создания нового файла в ручную
-void		PrintCreateItem(std::string& dir, insertCursorPositionFnc insCurPosFnc,	buttonsReadingFnc buttReadFnc,
+////	основное меню
+//void		PrintMainMenu(const u_int& vertPos, const MenuTemplates& mTemps, insertCursorPositionFnc insCurPosFnc);
+//
+//// построение таблицы с функциями редактирования
+//void		PrintTable(const u_int& failCount, std::string dir, std::list<ExamResults>& usersData, const MenuTemplates& mTemps,
+//				insertCursorPositionFnc insCurPosFnc, buttonsReadingFnc buttReadFnc, findingCursorPositionFnc2 findCurPosFnc2);
+//// упрощённая версия для построение таблицы 
+//void		PrintTable(std::string dir, std::list<ExamResults>& usersData, const MenuTemplates& mTemps,
+//				insertCursorPositionFnc insCurPosFnc, selectionMenuPrintingFnc selMenuPrintingFnc,
+//				buttonsReadingFnc buttReadFnc, findingCursorPositionFnc1 findCurPosFnc1, findingCursorPositionFnc2 findCurPosFnc2,
+//				readingBinaryFileFnc readBinFileFnc, writeInBinaryFileFnc writeInBinFileFnc,
+//				deletingFromBinaryFileFnc delFromBinFileFnc, changeDataInBinaryFileFnc changeInBinFileFnc,
+//				appendInBinaryFileFnc appInBinFileFnc, userInputFnc userInputFnc);
+//
+//// функция вычисления статискитеских данных
+//void		ComputeStatistics(const u_short& pasScore, const u_short& minMathScore, const u_short& minRuLangScore,
+//				const u_short& minEnLangScore, const std::string dir, std::list<ExamResults>& usersData,
+//				readingBinaryFileFnc readBinFileFnc, printTableFnc printTableFnc, insertCursorPositionFnc insCurPosFnc,
+//				buttonsReadingFnc buttReadFnc, findingCursorPositionFnc2 findCurPosFnc2);
+//
+//// функция создания нового файла в ручную
+//void		PrintCreateItem(std::string& dir, insertCursorPositionFnc insCurPosFnc,	buttonsReadingFnc buttReadFnc,
 				findingCursorPositionFnc1 findCurPosFnc, selectionMenuPrintingFnc selMenuPrintingFnc, userInputFnc userInputFnc);
+
+
+// указатели на соответствующие функции
+using findingCursorPositionFnc1 = void(*)(u_int& vertPosOut, const u_int& heigh);
+using findingCursorPositionFnc2 = void(*)(u_int& horPosOut, u_int& vertPosOut, const u_int& length, const u_int& height);
+using insertCursorPositionFnc = std::string(*)(std::string str, const u_int& vertPos, const MenuTemplates& mTemps,
+	u_short level, const u_int& iterator);
+using selectionMenuPrintingFnc = bool(*)(std::string title, insertCursorPositionFnc insCurPosFnc,
+//	buttonsReadingFnc buttReadFnc, findingCursorPositionFnc1 findCurPosFnc);
+//
+//using printTableFnc = void(*)(const u_int& failCount, std::string dir, std::list<ExamResults>& usersData, const MenuTemplates& mTemps,
+//	insertCursorPositionFnc insCurPosFnc, buttonsReadingFnc buttReadFnc, findingCursorPositionFnc2 findCurPosFnc2);

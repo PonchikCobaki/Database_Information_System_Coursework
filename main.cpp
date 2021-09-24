@@ -35,11 +35,9 @@ int main(int argc, char* argv[])
 		getline(cin, path);
 	}
 
-	CreateRandomBinDataset(path);
-
 	// установка нормативных баллов
-	u_short passingScore = 100;
-	u_short minMathScore = 0, minRuLangScore = 0, minEnLangScore = 0;
+	uint16_t passingScore = 100;
+	uint16_t minMathScore = 0, minRuLangScore = 0, minEnLangScore = 0;
 
 	//cout << "введите сумму проходных баллов: ";
 	//cin >> passingScore;
@@ -51,11 +49,29 @@ int main(int argc, char* argv[])
 	//cin >> minEnLangScore;
 
 	//	основные переменные 
-	//Array Exam(ReadingBinaryFile();				//	контейнер для неупорядоченного хранения данных пользователя в памяти
+	my::Array Exam;			//	контейнер для неупорядоченного хранения данных пользователя в памяти
 	//u_int horizontalPos = 1, verticalPos = 1;	//	переменные положения меню
 
 	bool	exitFlag = true;	//	флаг выхода из программы 
 	short	codeItem(0);		//	состояние клавиатуры
+	uint32_t len;
+	ReadingBinaryFile(path, Exam, 0, 0, len);
+	cout << "len: " << len << endl;
+	cout << "len Exam: " << Exam.getSize() << endl;
+	ReadingBinaryFile(path, Exam, 0, 100, len);
+	cout << "len Exam: " << Exam.getSize() << endl;
+
+	for (short i = 0; i < Exam.getSize(); ++i) {
+		cout << "№" << i << endl;
+		std::cout << "Имя: " << Exam[i].getFirstName() << " ";
+		std::cout << "Фамилия: " << Exam[i].getLastName() << " ";
+		std::cout << Exam[i].getMathScore() << " ";
+		std::cout << Exam[i].getRuLangScore() << " ";
+		std::cout << Exam[i].getEnLangScore() << " ";
+		std::cout << Exam[i].getTotalScore() << std::endl;
+	}
+
+	WriteInBinaryFile(path, Exam);
 
 	//while (exitFlag)
 	//{

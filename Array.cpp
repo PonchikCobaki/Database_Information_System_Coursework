@@ -1,56 +1,55 @@
 #include "Array.h"
 
 
-void Array::_defaultExtend(Account* oldArray) {
-	_size = _members + 1 + DEFAULT_ARRAY_EXTEND;
-	Account* bufferArray = new Account[_size];
-	for (u_int i(0); i < _members; ++i)
-		bufferArray[i] = _array[i];
+using namespace my;
 
-	if (_array)
-		delete[] _array;
+void Array::m_defaultExtend(Account* oldArray) {
+	m_size = m_members + 1 + DEFAULT_ARRAY_EXTEND;
+	Account* bufferArray = new Account[m_size];
+	for (u_int i(0); i < m_members; ++i)
+		bufferArray[i] = m_array[i];
 
-	_array = bufferArray;
+	if (m_array)
+		delete[] m_array;
+
+	m_array = bufferArray;
 }
 
-void Array::_move(const u_int& id, const bool invertion)
+void Array::m_move(const u_int& id, const bool invertion)
 {
 	if (invertion) {	// удаление элемента
 
-		for (u_int i = id; i < _members - 1; ++i) {
-			_array[i] = _array[i + 1];
+		for (u_int i = id; i < m_members - 1; ++i) {
+			m_array[i] = m_array[i + 1];
 		}
-		--_members;
 	}
 	else {	// добавление элемента
-		if (_members >= _size) 	// расширение массива
-			_defaultExtend(_array);
+		if (m_members >= m_size) 	// расширение массива
+			m_defaultExtend(m_array);
 
-		for (u_int i(_members + 1 - 1); i > id; --i)
-			_array[i] = _array[i - 1];
-	
-		++_members;
+		for (u_int i(m_members + 1 - 1); i > id; --i)
+			m_array[i] = m_array[i - 1];
 	}
 
 }
 
 Array::Array() {
-	_members = 0;
-	_size = DEFAULT_ARRAY_EXTEND;
-	_array = new Account[_size];
+	m_members = 0;
+	m_size = DEFAULT_ARRAY_EXTEND;
+	m_array = new Account[m_size];
 	std::cout << "zero Array create" << std::endl;
 }
-Array::Array(u_int members) : _members(members),
-_size(members + DEFAULT_ARRAY_EXTEND)
+Array::Array(u_int members) : m_members(members),
+m_size(members + DEFAULT_ARRAY_EXTEND)
 {
-	_array = new Account[_size];
+	m_array = new Account[m_size];
 	std::cout << "Array create" << std::endl;
 }
 
 Array::~Array()
 {
-	if (_array) {
-		delete[] _array;
+	if (m_array) {
+		delete[] m_array;
 	}
 	std::cout << "Array destruct\n";
 }
@@ -58,46 +57,70 @@ Array::~Array()
 
 Account& Array::operator[] (const long int id) {
 	try {
-		if (id >= long int(_members) || -id < -long int(_members) ) {
+		if ((id >= long int(m_members) || -id < -long int(m_members)) && m_members != 0) {
 			throw "\nindex out of range: ";
 		}
 
 		if (id >= 0)
-			return _array[id];
+			return m_array[id];
 		else
-			return _array[id + _members];
+			return m_array[id + m_members];
 	}
 	catch (const char* str) {
 		std::cerr << str << id << std::endl;
-		return _array[_size - 1];
+		return m_array[m_size - 1];
 	}
 }
 
-void Array::append(const u_int id, const Account& user) {
+Array& Array::append(const u_int id, const Account& user) {
 	try {
-		if (id > _members) {
+		if (id >= m_members) {
 			throw "\nindex out of range: ";
 		}
-		_move(id);
-		_array[id] = user;
+		m_move(id);
+		m_array[id] = user;
+		++m_members;
 	}
 	catch (const char* str) {
 		std::cerr << str << id << std::endl;
 	}
+
+	return *this;
 }
 
-void Array::del(const u_int id) {
+Array& Array::pushBack(const Account& user) {
+	m_move(m_members);
+	m_array[m_members] = user;
+	++m_members;
+	return *this;
+}
+
+Array& Array::del(const u_int id) {
 	try {
-		if (id >= _members) {
+		if (id >= m_members) {
 			throw "\nindex out of range: ";
 		}
-		_move(id, true);
+		m_move(id, true);
+		--m_members;
 	}
 	catch (const char* str) {
 		std::cerr << str << id << std::endl;
 	}
+
+	return *this;
 }
+
+Array& Array::clear() {
+	if (m_array) {
+		delete[] m_array;
+	}
+	m_members = 0;
+	m_size = DEFAULT_ARRAY_EXTEND;
+
+	return *this;
+}
+
 
 u_int Array::getSize() {
-	return _members;
+	return m_members;
 }

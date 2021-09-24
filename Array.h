@@ -1,41 +1,44 @@
-#include "Account.h"
-
-
-
 #ifndef ARRAY_H
 #define ARRAY_H
 
-
-enum ArrayDefinoons {
-	DEFAULT_ARRAY_EXTEND = 1,
-};
+#include "Account.h"
 
 
-class Array
-{
-private:
-	u_int _members;
-	u_int _size;
-	Account* _array;
+namespace my {
 
-	void _defaultExtend(Account* oldArray);
-	void _move(const u_int& id, const bool invertion = false);
+	enum ArrayDefinoons {
+		DEFAULT_ARRAY_EXTEND = 8,
+	};
 
 
-public:
-	Array();
-	Array(u_int members);
+	class Array
+	{
+	private:
+		u_int m_members;
+		u_int m_size;
+		Account* m_array;
 
-	~Array();
+		void m_defaultExtend(Account* oldArray);
+		void m_move(const u_int& id, const bool invertion = false);
 
 
-	Account& operator[] (const long int id);
+	public:
+		Array();
+		Array(u_int members);
 
-	void append(const u_int id, const Account& user);
-	void del(const u_int id);
+		~Array();
 
-	u_int getSize();
 
-};
+		Account& operator[] (const long int id);
+
+		Array& append(const u_int id, const Account& user);
+		Array& pushBack(const Account& user);
+		Array& del(const u_int id);
+		Array& clear();
+
+		u_int getSize();
+
+	};
+}
 
 #endif // ARRAY_H

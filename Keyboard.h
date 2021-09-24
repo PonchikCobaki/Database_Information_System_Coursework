@@ -1,16 +1,19 @@
 #pragma once
 
 
+#include "Account.h"
+
+#include <Windows.h>
 
 
 // указатели на соответствующие функции
 u_short ButtonsReading(u_int& horPosOut, u_int& vertPosOut);
-void	UserInput(ExamResults& userData);
+void	UserInput(my::Account& userData);
 
 // функция чтения клавиш клавиатуры
 using buttonsReadingFnc = u_short(*)(u_int& horPosOut, u_int& vertPosOut);
 // функция ввода с клавиатуры
-using userInputFnc = void(*)(ExamResults& userData);
+using userInputFnc = void(*)(my::Account& userData);
 
 
 
