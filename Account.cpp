@@ -16,7 +16,7 @@ Account::Account()
 	uint16_t m_mathScore = 0;
 	uint16_t m_ruLangScore = 0;
 	uint16_t m_enLangScore = 0;
-	std::cout << "zero Account create" << std::endl;
+	//std::cout << "zero Account create" << std::endl;	// to do dbg
 }
 Account::Account(std::string firstName,	std::string lastName,
 	uint16_t mathScore, uint16_t ruLangScore, uint16_t enLangScore)
@@ -24,7 +24,7 @@ Account::Account(std::string firstName,	std::string lastName,
 	m_mathScore(mathScore), m_ruLangScore(ruLangScore), m_enLangScore(enLangScore)
 {
 	m_charInit();
-	std::cout << "Account create" << std::endl;
+	//std::cout << "Account create" << std::endl;	// to do dbg
 }
 
 Account::~Account() {
@@ -34,7 +34,7 @@ Account::~Account() {
 	if (m_firstNameCh) {
 		delete[] m_lastNameCh;
 	}
-	std::cout << "Account destruct\n";
+	//std::cout << "Account destruct\n";	// to do dbg
 }
 
 void Account::operator= (Account& user) {

@@ -2,18 +2,19 @@
 
 
 #include "Account.h"
-
 #include <Windows.h>
 
 
+
 // указатели на соответствующие функции
-u_short ButtonsReading(u_int& horPosOut, u_int& vertPosOut);
-void	UserInput(my::Account& userData);
+using buttonsReadingFnc = u_short(*)(u_int& horPosOut, u_int& vertPosOut);
+using userInputFnc = void(*)(my::Account& userData);
+
 
 // функция чтения клавиш клавиатуры
-using buttonsReadingFnc = u_short(*)(u_int& horPosOut, u_int& vertPosOut);
+u_short ButtonsReading(u_int& horPosOut, u_int& vertPosOut);
 // функция ввода с клавиатуры
-using userInputFnc = void(*)(my::Account& userData);
+void	UserInput(my::Account& userData);
 
 
 

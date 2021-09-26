@@ -19,17 +19,14 @@ enum DataBuffersSize {
 	SUBFILE_SIZE = 7 * DATA_FIELD_LENGTH, // 7*14=98; размер подфайлов для удаления/изменения данных
 };
 
-								
+// указатели на соответствующие функции
+using readingBinaryFileFnc = bool(*)(const std::string& dir, my::Array& usersData);
+using writeInBinaryFileFnc = bool(*)(const std::string& dir, my::Array& usersData);
+
 // функция автозаполнения файла
 void CreateRandomBinDataset(std::string dir);
 
 // функция чтения файла
-bool ReadingBinaryFile(const std::string& dir, my::Array& usersData, const u_int& dataReadIndBeg,
-		const u_int& dataReadIndCount, u_int& dataCountOut);
+bool ReadingBinaryFile(const std::string& dir, my::Array& usersData);
 // функция записи в файл
 bool WriteInBinaryFile(const std::string& dir, my::Array& usersData);
-
-// указатели на соответствующие функции
-using readingBinaryFileFnc = bool(*)(const std::string& dir, my::Array& usersData, const u_int& dataReadIndBeg,
-	const u_int& dataReadIndCount, u_int& dataCountOut);
-using writeInBinaryFileFnc = bool(*)(const std::string& dir, my::Array& usersData);

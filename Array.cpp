@@ -37,13 +37,13 @@ Array::Array() {
 	m_members = 0;
 	m_size = DEFAULT_ARRAY_EXTEND;
 	m_array = new Account[m_size];
-	std::cout << "zero Array create" << std::endl;
+	//std::cout << "zero Array create" << std::endl;	// to do dbg
 }
 Array::Array(u_int members) : m_members(members),
 m_size(members + DEFAULT_ARRAY_EXTEND)
 {
 	m_array = new Account[m_size];
-	std::cout << "Array create" << std::endl;
+	//std::cout << "Array create" << std::endl;	// to do dbg
 }
 
 Array::~Array()
@@ -51,7 +51,7 @@ Array::~Array()
 	if (m_array) {
 		delete[] m_array;
 	}
-	std::cout << "Array destruct\n";
+	//std::cout << "Array destruct\n";	// to do dbg
 }
 
 
@@ -69,12 +69,13 @@ Account& Array::operator[] (const long int id) {
 	catch (const char* str) {
 		std::cerr << str << id << std::endl;
 		return m_array[m_size - 1];
+		system("pause");
 	}
 }
 
 Array& Array::append(const u_int id, const Account& user) {
 	try {
-		if (id >= m_members) {
+		if (id > m_members) {
 			throw "\nindex out of range: ";
 		}
 		m_move(id);
@@ -83,6 +84,7 @@ Array& Array::append(const u_int id, const Account& user) {
 	}
 	catch (const char* str) {
 		std::cerr << str << id << std::endl;
+		system("pause");
 	}
 
 	return *this;
@@ -105,6 +107,7 @@ Array& Array::del(const u_int id) {
 	}
 	catch (const char* str) {
 		std::cerr << str << id << std::endl;
+		system("pause");
 	}
 
 	return *this;
@@ -116,7 +119,7 @@ Array& Array::clear() {
 	}
 	m_members = 0;
 	m_size = DEFAULT_ARRAY_EXTEND;
-
+	m_array = new Account[m_size];
 	return *this;
 }
 

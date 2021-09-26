@@ -1,6 +1,6 @@
 #include "Account.h"
-//#include "Keyboard.h"
-//#include "CMenu.h"
+#include "Keyboard.h"
+#include "CMenu.h"
 #include "BinFO.h"
 #include "Array.h"
 
@@ -25,15 +25,15 @@ int main(int argc, char* argv[])
 	setlocale(LC_ALL, "ru");
 
 	// выбор пути файла
-	string path;
-	//string path = "random_data.bin";	//to do dbg
-	if (argc > 1) {
+	//string path;
+	string path = "random_data.bin";	//to do dbg
+	/*if (argc > 1) {
 		path = argv[1];
 	}
 	else {
 		cout << "введите путь и название файла: ";
 		getline(cin, path);
-	}
+	}*/
 
 	// установка нормативных баллов
 	uint16_t passingScore = 100;
@@ -50,64 +50,54 @@ int main(int argc, char* argv[])
 
 	//	основные переменные 
 	my::Array Exam;			//	контейнер для неупорядоченного хранения данных пользователя в памяти
-	//u_int horizontalPos = 1, verticalPos = 1;	//	переменные положения меню
+	u_int horizontalPos = 1, verticalPos = 1;	//	переменные положения меню
 
-	bool	exitFlag = true;	//	флаг выхода из программы 
+	bool	exitFlag = false;	//	флаг выхода из программы 
 	short	codeItem(0);		//	состояние клавиатуры
-	uint32_t len;
-	ReadingBinaryFile(path, Exam, 0, 0, len);
-	cout << "len: " << len << endl;
-	cout << "len Exam: " << Exam.getSize() << endl;
-	ReadingBinaryFile(path, Exam, 0, 100, len);
-	cout << "len Exam: " << Exam.getSize() << endl;
 
-	for (short i = 0; i < Exam.getSize(); ++i) {
-		cout << "№" << i << endl;
-		std::cout << "Имя: " << Exam[i].getFirstName() << " ";
-		std::cout << "Фамилия: " << Exam[i].getLastName() << " ";
-		std::cout << Exam[i].getMathScore() << " ";
-		std::cout << Exam[i].getRuLangScore() << " ";
-		std::cout << Exam[i].getEnLangScore() << " ";
-		std::cout << Exam[i].getTotalScore() << std::endl;
+	//CreateRandomBinDataset(path);
+	exitFlag = ReadingBinaryFile(path, Exam);
+	if (exitFlag) {
+		cerr << "\n\t ФАЙЛ ПУСТОЙ ИЛИ ЕГО НЕ СУЩЕСТВУЕТ!" << endl;
+		system("pause");
+		exitFlag = true;
 	}
 
-	WriteInBinaryFile(path, Exam);
+	while (!exitFlag)
+	{
+		PrintMainMenu(verticalPos, allMenuTemplates, InsertCursorPosition);	// вывод основного меню
 
-	//while (exitFlag)
-	//{
-	//	PrintMainMenu(verticalPos, allMenuTemplates, InsertCursorPosition);	// вывод основного меню
+		codeItem = ButtonsReading(horizontalPos, verticalPos);					// чтение клавиатуры
+		FindingCursorPosition(verticalPos, static_cast<int>(HEIGHT_ITEM_MAIN));	// установка курсора
 
-	//	codeItem = ButtonsReading(horizontalPos, verticalPos);					// чтение клавиатуры
-	//	FindingCursorPosition(verticalPos, static_cast<int>(HEIGHT_ITEM_MAIN));	// установка курсора
+		if (codeItem == KEY_ENTER)
+		{
+			switch (verticalPos)
+			{
+			case ITEM_VIEW:
+				PrintTable(path, Exam, allMenuTemplates,
+					InsertCursorPosition, SelectionMenuPrinting, ButtonsReading,
+					FindingCursorPosition, FindingCursorPosition,
+					ReadingBinaryFile, WriteInBinaryFile, UserInput);
+				break;
 
-	//	if (codeItem == KEY_ENTER)
-	//	{
-	//		switch (verticalPos)
-	//		{
-	//		case ITEM_VIEW:
-	//			PrintTable(path, usersData, allMenuTemplates,
-	//				InsertCursorPosition, SelectionMenuPrinting, ButtonsReading,
-	//				FindingCursorPosition, FindingCursorPosition,
-	//				ReadingBinaryFile, WriteInBinaryFile, DeletingFromBinaryFile,
-	//				ChangeDataInBinaryFile, AppendInBinaryFile, UserInput);
-	//			break;
+			case ITEM_STATISTICS:
+				/*ComputeStatistics(passingScore, minMathScore, minRuLangScore, minEnLangScore, path, usersData,
+					ReadingBinaryFile, PrintTable, InsertCursorPosition, ButtonsReading, FindingCursorPosition);*/
+				break;
 
-	//		case ITEM_STATISTICS:
-	//			ComputeStatistics(passingScore, minMathScore, minRuLangScore, minEnLangScore, path, usersData,
-	//				ReadingBinaryFile, PrintTable, InsertCursorPosition, ButtonsReading, FindingCursorPosition);
-	//			break;
+			case ITEM_CREATE:
+				//PrintCreateItem(path, InsertCursorPosition, ButtonsReading, FindingCursorPosition, SelectionMenuPrinting, UserInput);
+				////CreateRandomBinDataset(path);
+				break;
 
-	//		case ITEM_CREATE:
-	//			PrintCreateItem(path, InsertCursorPosition, ButtonsReading, FindingCursorPosition, SelectionMenuPrinting, UserInput);
-	//			//CreateRandomBinDataset(path);
-	//			break;
+			case ITEM_EXIT:
+	 			WriteInBinaryFile(path, Exam);
+				exitFlag = true;
 
-	//		case ITEM_EXIT:
-	//			exitFlag = false;
-
-	//		}
-	//	}
-	//}
+			}
+		}
+	}
 
 
 	return 0;

@@ -60,6 +60,8 @@ void UserInput(my::Account& userData)
 	stringstream input;	//	поток для записи
 	string buffer;		//	буффер
 	string subBuffer;	//	буффер для чисел
+	getline(cin, buffer);
+	input << buffer;
 
 	// чтение строк
 	while (buffer.length() == 0) {

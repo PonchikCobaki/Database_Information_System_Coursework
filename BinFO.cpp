@@ -51,8 +51,7 @@ void CreateRandomBinDataset(std::string dir)
 }
 
 // функция чтения файла
-bool ReadingBinaryFile(const std::string& dir, my::Array& usersData, const u_int& dataReadIndBeg,
-		const u_int& dataReadIndCount, u_int& dataCountOut)
+bool ReadingBinaryFile(const std::string& dir, my::Array& usersData)
 {
 	using namespace std;
 
@@ -64,44 +63,36 @@ bool ReadingBinaryFile(const std::string& dir, my::Array& usersData, const u_int
 		return true;
 	}
 
-	dataCountOut = inBinFile.seekg(0, ios::end).tellg() / usersData[0].getWriteSize();
+	uint16_t dataCount = inBinFile.seekg(0, ios::end).tellg() / usersData[0].getWriteSize();
+	inBinFile.seekg(0, ios::beg);
 
-	if (dataReadIndCount != 0)
-	{
-		// создание нового среза
-		my::Account dataBuffer;	// буффер для класса
-		char* strBuffer;	// буффер для строк
-		uint16_t buffer;	// буффер для чисел
-		inBinFile.seekg(dataReadIndBeg * dataBuffer.getWriteSize(), ios::beg);
-		for (u_int i = 0; i < dataReadIndCount; ++i) {
+	// создание нового среза
+	my::Account dataBuffer;	// буффер для класса
+	char* strBuffer;	// буффер для строк
+	uint16_t buffer;	// буффер для чисел
+	usersData.clear();
+
+	for (u_int i = 0; i < dataCount; ++i) {
 			
-			// чтение и запись в класс 
-			strBuffer = new char[my::LENGTH_FIRST_NAME];
-			inBinFile.read(strBuffer, sizeof(char) * my::LENGTH_FIRST_NAME);
-			dataBuffer.setFirstName(strBuffer);
-			delete[] strBuffer;
+		// чтение и запись в класс 
+		strBuffer = new char[static_cast<uint16_t>(my::LENGTH_FIRST_NAME)];
+		inBinFile.read(strBuffer, sizeof(char) * static_cast<uint16_t>(my::LENGTH_FIRST_NAME));
+		dataBuffer.setFirstName(strBuffer);
+		delete[] strBuffer;
 
-			strBuffer = new char[my::LENGTH_FIRST_NAME];
-			inBinFile.read(strBuffer, sizeof(char) * my::LENGTH_LAST_NAME);
-			dataBuffer.setLastName(strBuffer);
-			delete[] strBuffer;
+		strBuffer = new char[static_cast<uint16_t>(my::LENGTH_FIRST_NAME)];
+		inBinFile.read(strBuffer, sizeof(char) * static_cast<uint16_t>(my::LENGTH_LAST_NAME));
+		dataBuffer.setLastName(strBuffer);
+		delete[] strBuffer;
 
-			inBinFile.read(reinterpret_cast<char*>(&buffer), sizeof(uint16_t));
-			dataBuffer.setMathScore(buffer);
-			inBinFile.read(reinterpret_cast<char*>(&buffer), sizeof(uint16_t));
-			dataBuffer.setRuLangScore(buffer);
-			inBinFile.read(reinterpret_cast<char*>(&buffer), sizeof(uint16_t));
-			dataBuffer.setEnLangScore(buffer);
+		inBinFile.read(reinterpret_cast<char*>(&buffer), sizeof(uint16_t));
+		dataBuffer.setMathScore(buffer);
+		inBinFile.read(reinterpret_cast<char*>(&buffer), sizeof(uint16_t));
+		dataBuffer.setRuLangScore(buffer);
+		inBinFile.read(reinterpret_cast<char*>(&buffer), sizeof(uint16_t));
+		dataBuffer.setEnLangScore(buffer);
 
-			// проверка на случай имеющейся базы
-			if (usersData.getSize() != dataCountOut)
-				usersData.pushBack(dataBuffer);
-			else if (usersData.getSize() >= dataCountOut) 
-				usersData[i] = dataBuffer;
-			else
-				exit(-1);
-
-		}
+		usersData.pushBack(dataBuffer);
 	}
 
 	inBinFile.close();

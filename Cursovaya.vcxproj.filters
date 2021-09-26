@@ -54,4 +54,9 @@
   <ItemGroup>
     <Text Include="..\ТЗ.txt" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="random_data_class.bin">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+  </ItemGroup>
 </Project>
