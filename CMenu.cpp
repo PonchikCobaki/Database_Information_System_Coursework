@@ -211,13 +211,8 @@ void PrintTable(std::string dir, my::Array& usersData, const MenuTemplates& mTem
 
 	u_int	dataViewIndBeg(0);						// начальный индекс просмотра
 	u_int	dataViewIndCount(DATA_FIELD_LENGTH);	// число эл. просмотра
-
-	//auto	uData = usersData.begin();				// эл. из среза
-	//u_int	uIndex;									// пременная для итератора вывода
-	//u_int	sliceIndBeg(0);							// начальный индекс среза
-	//u_int	sliceIndCount(0);						// число элементов среза
-	//u_int	sliceCur(0);							// текущий срез
-	//u_int	sliceCounts(0);							// число срезов
+	int32_t uIndex;
+	int32_t range;
 
 	bool changeFlag = false;						// флаг изменения эл.
 	stringstream dataBuffer;						// буфер для вывода
@@ -226,7 +221,8 @@ void PrintTable(std::string dir, my::Array& usersData, const MenuTemplates& mTem
 	uint32_t changeInd(0);
 	my::Account changeUser;
 	bool offset;
-
+	bool invertedFlag = !selMenuPrintingFnc("Просмотр таблицы в прямом порядке",
+		insCurPosFnc, buttReadFnc, findCurPosFnc1);
 	// расчёт кол-ва выводимых данных
 	if ((dataViewIndBeg + dataViewIndCount) > dataCount) {
 		dataViewIndCount = dataCount - dataViewIndBeg; // изменение размера кол-ва элементов вывода
@@ -272,13 +268,24 @@ void PrintTable(std::string dir, my::Array& usersData, const MenuTemplates& mTem
 		}
 
 		changeFlag = false;
+
+
+
+		if (invertedFlag) {
+			uIndex = -1 * int32_t(dataViewIndBeg) - 1;
+			range = 
+		}
+		else {
+			uIndex = dataViewIndBeg;
+		}
+
 		//////////////////////////////////////////////////
 		//				вывод данных					//
 		//////////////////////////////////////////////////
 
 		// заполнение промежуточного потока для вывода таблицы
 		dataBuffer << mTemps.tableSeparatorHorizontal << "\n" << mTemps.tableHeader << "\n" << mTemps.tableSeparatorHorizontal << "\n";
-		for (uint32_t uIndex = dataViewIndBeg; uIndex <= (dataViewIndBeg + dataViewIndCount - IND_CONV_FACTOR); ++uIndex) {
+		for (; uIndex <= (dataViewIndBeg + dataViewIndCount - IND_CONV_FACTOR) ; ) {
 			u_int printInd;
 			if (dataViewIndBeg != 0 && dataPage != dataPageCount) {
 				printInd = (uIndex % dataViewIndCount) + 1;
@@ -298,6 +305,7 @@ void PrintTable(std::string dir, my::Array& usersData, const MenuTemplates& mTem
 				<< setw(EN_SCORE_FIELD_WIDTH) << right << usersData[uIndex].getEnLangScore() << mTemps.tableSeparatorVertical
 				<< setw(TOTAL_SCORE_FIELD_WIDTH) << right << usersData[uIndex].getTotalScore() << mTemps.tableSeparatorVertical << "\n"
 				<< mTemps.tableSeparatorHorizontal << "\n";
+			invertedFlag ? --uIndex : ++uIndex;
 		}
 
 		dataBuffer << mTemps.tablePage << setw(PAGE_FIELD_WIDTH) << right << dataPage << mTemps.tablePageSeparator <<
@@ -396,12 +404,6 @@ void PrintTable(std::string dir, my::Array& usersData, const MenuTemplates& mTem
 					<< mTemps.tableSeparatorHorizontal 
 					<< mTemps.cursor << "\n";
 			}
-
-
-
-			// очистка буффера
-			dataBuffer.str("");
-			dataBuffer.clear();
 
 			cout << "\n\t\t введите новые данные: ";
 
