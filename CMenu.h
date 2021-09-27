@@ -104,7 +104,8 @@ using insertCursorPositionFnc = std::string(*)(std::string str, const u_int& ver
 using selectionMenuPrintingFnc = bool(*)(std::string title, insertCursorPositionFnc insCurPosFnc,
 	buttonsReadingFnc buttReadFnc, findingCursorPositionFnc1 findCurPosFnc);
 
-//using printTableFnc = void(*)(const u_int& failCount, std::string dir, std::list<ExamResults>& usersData, const MenuTemplates& mTemps,
+using printTableFnc = void(*)(const u_int& failCount, std::string dir, my::Array& usersData, const MenuTemplates& mTemps,
+	insertCursorPositionFnc insCurPosFnc, buttonsReadingFnc buttReadFnc, findingCursorPositionFnc2 findCurPosFnc2);
 
 
 //	функция предотвращающая выход переменной верктикального указателя за пределы [V_B_P,height]
@@ -131,17 +132,17 @@ void		PrintTable(std::string dir, my::Array& usersData, const MenuTemplates& mTe
 				readingBinaryFileFnc readBinFileFnc, writeInBinaryFileFnc writeInBinFileFnc,
 				userInputFnc userInputFnc);
 //// упрощённая версия для построение таблицы 
-//void		PrintTable(const u_int& failCount, std::string dir, std::list<ExamResults>& usersData, const MenuTemplates& mTemps,
-//	insertCursorPositionFnc insCurPosFnc, buttonsReadingFnc buttReadFnc, findingCursorPositionFnc2 findCurPosFnc2);
+void		PrintTable(const u_int& failCount, std::string dir, my::Array& usersData, const MenuTemplates& mTemps,
+				insertCursorPositionFnc insCurPosFnc, buttonsReadingFnc buttReadFnc, findingCursorPositionFnc2 findCurPosFnc2);
 
-//// функция вычисления статискитеских данных
-//void		ComputeStatistics(const u_short& pasScore, const u_short& minMathScore, const u_short& minRuLangScore,
-//				const u_short& minEnLangScore, const std::string dir, std::list<ExamResults>& usersData,
-//				readingBinaryFileFnc readBinFileFnc, printTableFnc printTableFnc, insertCursorPositionFnc insCurPosFnc,
-//				buttonsReadingFnc buttReadFnc, findingCursorPositionFnc2 findCurPosFnc2);
-//
-//// функция создания нового файла в ручную
-//void		PrintCreateItem(std::string& dir, insertCursorPositionFnc insCurPosFnc,	buttonsReadingFnc buttReadFnc,
-//				findingCursorPositionFnc1 findCurPosFnc, selectionMenuPrintingFnc selMenuPrintingFnc, userInputFnc userInputFnc);
+// функция вычисления статискитеских данных
+void		ComputeStatistics(const u_short& pasScore, const u_short& minMathScore, const u_short& minRuLangScore,
+	const u_short& minEnLangScore, const std::string dir, my::Array& usersData,
+	readingBinaryFileFnc readBinFileFnc, printTableFnc printTableFnc, insertCursorPositionFnc insCurPosFnc,
+	buttonsReadingFnc buttReadFnc, findingCursorPositionFnc2 findCurPosFnc2);
+
+// функция создания нового файла в ручную
+void		PrintCreateItem(std::string& dir, insertCursorPositionFnc insCurPosFnc,	buttonsReadingFnc buttReadFnc,
+				findingCursorPositionFnc1 findCurPosFnc, selectionMenuPrintingFnc selMenuPrintingFnc, userInputFnc userInputFnc);
 
 

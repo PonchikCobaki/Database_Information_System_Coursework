@@ -55,8 +55,9 @@ int main(int argc, char* argv[])
 	bool	exitFlag = false;	//	флаг выхода из программы 
 	short	codeItem(0);		//	состояние клавиатуры
 
-	//CreateRandomBinDataset(path);
+	CreateRandomBinDataset(path);
 	exitFlag = ReadingBinaryFile(path, Exam);
+
 	if (exitFlag) {
 		cerr << "\n\t ФАЙЛ ПУСТОЙ ИЛИ ЕГО НЕ СУЩЕСТВУЕТ!" << endl;
 		system("pause");
@@ -82,8 +83,8 @@ int main(int argc, char* argv[])
 				break;
 
 			case ITEM_STATISTICS:
-				/*ComputeStatistics(passingScore, minMathScore, minRuLangScore, minEnLangScore, path, usersData,
-					ReadingBinaryFile, PrintTable, InsertCursorPosition, ButtonsReading, FindingCursorPosition);*/
+				ComputeStatistics(passingScore, minMathScore, minRuLangScore, minEnLangScore, path, Exam,
+					ReadingBinaryFile, PrintTable, InsertCursorPosition, ButtonsReading, FindingCursorPosition);
 				break;
 
 			case ITEM_CREATE:
