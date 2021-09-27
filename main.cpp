@@ -88,8 +88,8 @@ int main(int argc, char* argv[])
 				break;
 
 			case ITEM_CREATE:
-				//PrintCreateItem(path, InsertCursorPosition, ButtonsReading, FindingCursorPosition, SelectionMenuPrinting, UserInput);
-				////CreateRandomBinDataset(path);
+				PrintCreateItem(path, Exam, InsertCursorPosition, ButtonsReading,
+					FindingCursorPosition, SelectionMenuPrinting, UserInput, WriteInBinaryFile);
 				break;
 
 			case ITEM_EXIT:

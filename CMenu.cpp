@@ -604,7 +604,7 @@ void ComputeStatistics(const u_short& pasScore, const u_short& minMathScore, con
 
 // функция создания нового файла в ручную
 void PrintCreateItem(std::string& dir, my::Array& usersData, insertCursorPositionFnc insCurPosFnc, buttonsReadingFnc buttReadFnc,
-		findingCursorPositionFnc1 findCurPosFnc, selectionMenuPrintingFnc selMenuPrintingFnc, userInputFnc userInputFnc)
+		findingCursorPositionFnc1 findCurPosFnc, selectionMenuPrintingFnc selMenuPrintingFnc, userInputFnc userInputFnc, writeInBinaryFileFnc writeInBinFileFnc)
 {
 	using namespace std;
 
@@ -625,31 +625,15 @@ void PrintCreateItem(std::string& dir, my::Array& usersData, insertCursorPositio
 
 	bool flagExit(false);
 	u_int counter(1);				// абсолютный счётчик
-	ExamResults			userData;	// промежуточная структура для записи
-	ExamResultsBinary	bufData;	// структура для записи в бинарный файл
+	my::Account			userData;	// промежуточная структура для записи
 
-	//	открытие файла
-	ofstream outBinFile(dir, ios::trunc | ios::binary);
-	// чтение данных
+	usersData.clear();
 	cout << "Введите данные по порядку" << endl;
 	while (!flagExit)
 	{
 		cout << "№ " << counter << " : ";
 		UserInput(userData);
-
-		// копирование данных в структуру для записи
-		strcpy_s(bufData.firstName, LENGTH_FIRST_NAME, userData.firstName.c_str());
-		strcpy_s(bufData.lastName, LENGTH_LAST_NAME, userData.lastName.c_str());
-		bufData.mathScore = userData.mathScore;
-		bufData.ruLangScore = userData.ruLangScore;
-		bufData.enLangScore = userData.enLangScore;
-
-		// запись структуры
-		outBinFile.write(bufData.firstName, sizeof(*bufData.lastName) * LENGTH_FIRST_NAME);
-		outBinFile.write(bufData.lastName, sizeof(*bufData.firstName) * LENGTH_LAST_NAME);
-		outBinFile.write((char*)&bufData.mathScore, sizeof(bufData.mathScore));
-		outBinFile.write((char*)&bufData.ruLangScore, sizeof(bufData.ruLangScore));
-		outBinFile.write((char*)&bufData.enLangScore, sizeof(bufData.enLangScore));
+		usersData.pushBack(userData);
 
 		++counter;	// абсолютный счётчик
 
@@ -658,7 +642,7 @@ void PrintCreateItem(std::string& dir, my::Array& usersData, insertCursorPositio
 		u_int horPos(HORIZONTAL_BEGIN_POINT);
 		u_int vertPos(VERTICAL_BEGIN_POINT);
 		if (buttReadFnc(horPos, vertPos) == KEY_ESCAPE) {
-			outBinFile.close();
+			writeInBinFileFnc(dir, usersData);
 			flagExit = true;
 		}
 	}

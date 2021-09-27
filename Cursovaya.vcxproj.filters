@@ -58,5 +58,11 @@
     <None Include="random_data_class.bin">
       <Filter>Файлы ресурсов</Filter>
     </None>
+    <None Include="data.bin">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
+    <None Include="random_data.bin">
+      <Filter>Файлы ресурсов</Filter>
+    </None>
   </ItemGroup>
 </Project>

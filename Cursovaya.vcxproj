@@ -157,6 +157,8 @@
     <Text Include="..\ТЗ.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="data.bin" />
+    <None Include="random_data.bin" />
     <None Include="random_data_class.bin" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

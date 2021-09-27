@@ -142,7 +142,7 @@ void		ComputeStatistics(const u_short& pasScore, const u_short& minMathScore, co
 	buttonsReadingFnc buttReadFnc, findingCursorPositionFnc2 findCurPosFnc2);
 
 // функция создания нового файла в ручную
-void		PrintCreateItem(std::string& dir, insertCursorPositionFnc insCurPosFnc,	buttonsReadingFnc buttReadFnc,
-				findingCursorPositionFnc1 findCurPosFnc, selectionMenuPrintingFnc selMenuPrintingFnc, userInputFnc userInputFnc);
+void		PrintCreateItem(std::string& dir, my::Array& usersData, insertCursorPositionFnc insCurPosFnc, buttonsReadingFnc buttReadFnc,
+				findingCursorPositionFnc1 findCurPosFnc, selectionMenuPrintingFnc selMenuPrintingFnc, userInputFnc userInputFnc, writeInBinaryFileFnc writeInBinFileFnc);
 
 
