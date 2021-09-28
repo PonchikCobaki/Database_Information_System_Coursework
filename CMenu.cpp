@@ -6,7 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-
+#include <math.h>
 
 // шаблоны пунктов меню
 MenuTemplates allMenuTemplates = {
@@ -220,8 +220,9 @@ void PrintTable(std::string dir, my::Array& usersData, const MenuTemplates& mTem
 	uint32_t changeInd(0);
 	my::Account changeUser;
 	bool offset;
-	//bool invertedFlag = !selMenuPrintingFnc("Просмотр таблицы в прямом порядке",
-	//	insCurPosFnc, buttReadFnc, findCurPosFnc1);
+	bool invertedFlag = !selMenuPrintingFnc("Просмотр таблицы в прямом порядке",
+		insCurPosFnc, buttReadFnc, findCurPosFnc1);
+	u_int printInd;
 	// расчёт кол-ва выводимых данных
 	if ((dataViewIndBeg + dataViewIndCount) > dataCount) {
 		dataViewIndCount = dataCount - dataViewIndBeg; // изменение размера кол-ва элементов вывода
@@ -235,71 +236,128 @@ void PrintTable(std::string dir, my::Array& usersData, const MenuTemplates& mTem
 		//////////////////////////////////////////////
 
 		if (dataCount == 0) {
+			writeInBinFileFnc(dir, usersData);
 			exitFlag = true;
 			break;
 		}
 
+		if (!invertedFlag) {
+			if (prevDataPage != dataPage || changeFlag) {
+				// установка индексов среза вывода
+				dataViewIndCount = DATA_FIELD_LENGTH;
+				dataViewIndBeg = (dataPage - IND_CONV_FACTOR) * dataViewIndCount;
 
-		if (prevDataPage != dataPage || changeFlag) {
-			// установка индексов среза вывода
-			dataViewIndCount = DATA_FIELD_LENGTH;
-			dataViewIndBeg = (dataPage - IND_CONV_FACTOR) * dataViewIndCount;
+				// проверка длины среза вывода
+				if ((dataViewIndBeg + dataViewIndCount) > dataCount) {
+					dataViewIndCount = dataCount - dataViewIndBeg;
+				}
 
-			// проверка длины среза вывода
-			if ((dataViewIndBeg + dataViewIndCount) > dataCount) {
-				dataViewIndCount = dataCount - dataViewIndBeg;
+				findCurPosFnc2(dataPage, vertPos, dataPageCount, dataViewIndCount);
+
+				prevDataPage = dataPage;
 			}
 
-			findCurPosFnc2(dataPage, vertPos, dataPageCount, dataViewIndCount);
-
-			prevDataPage = dataPage;
-		}
-
-		// нахождение количества страниц
-		if (dataCount % DATA_FIELD_LENGTH == 0) {
-			dataPageCount = dataCount / DATA_FIELD_LENGTH;
-		}
-		else if (dataCount % DATA_FIELD_LENGTH != 0 && dataCount > DATA_FIELD_LENGTH) {
-			dataPageCount = dataCount / DATA_FIELD_LENGTH;
-			++dataPageCount;
-		}
-		else {
-			dataPageCount = 1;
-		}
-
-		changeFlag = false;
-
-
-		//////////////////////////////////////////////////
-		//				вывод данных					//
-		//////////////////////////////////////////////////
-
-		// заполнение промежуточного потока для вывода таблицы
-		dataBuffer << mTemps.tableSeparatorHorizontal << "\n" << mTemps.tableHeader << "\n" << mTemps.tableSeparatorHorizontal << "\n";
-		for (int32_t uIndex = dataViewIndBeg; uIndex <= (dataViewIndBeg + dataViewIndCount - IND_CONV_FACTOR) ; ++uIndex) {
-			u_int printInd;
-			if (dataViewIndBeg != 0 && dataPage != dataPageCount) {
-				printInd = (uIndex % dataViewIndCount) + 1;
+			// нахождение количества страниц
+			if (dataCount % DATA_FIELD_LENGTH == 0) {
+				dataPageCount = dataCount / DATA_FIELD_LENGTH;
 			}
-			else if (dataPage == dataPageCount) {
-				printInd = uIndex - (DATA_FIELD_LENGTH * (dataPageCount - 1)) + 1;
+			else if (dataCount % DATA_FIELD_LENGTH != 0 && dataCount > DATA_FIELD_LENGTH) {
+				dataPageCount = dataCount / DATA_FIELD_LENGTH;
+				++dataPageCount;
 			}
-			else{
-				printInd = uIndex + 1;
+			else {
+				dataPageCount = 1;
 			}
-			
-			dataBuffer << insCurPosFnc(mTemps.space, vertPos, mTemps, LEVEL_VIEW, printInd)
-				<< mTemps.tableSeparatorVertical << setw(COUNTER_FIELD_WIDTH) << right << uIndex + 1 << mTemps.tableSeparatorVertical
-				<< setw(FIRST_NAME_FIELD_WIDTH) << left << usersData[uIndex].getFirstName() << mTemps.tableSeparatorVertical
-				<< setw(LAST_NAME_FIELD_WIDTH) << usersData[uIndex].getLastName() << mTemps.tableSeparatorVertical
-				<< setw(MATCH_SCORE_FIELD_WIDTH) << right << usersData[uIndex].getMathScore() << mTemps.tableSeparatorVertical
-				<< setw(RU_SCORE_FIELD_WIDTH) << right << usersData[uIndex].getRuLangScore() << mTemps.tableSeparatorVertical
-				<< setw(EN_SCORE_FIELD_WIDTH) << right << usersData[uIndex].getEnLangScore() << mTemps.tableSeparatorVertical
-				<< setw(TOTAL_SCORE_FIELD_WIDTH) << right << usersData[uIndex].getTotalScore() << mTemps.tableSeparatorVertical << "\n"
-				<< mTemps.tableSeparatorHorizontal << "\n";
-			//invertedFlag ? --uIndex : ++uIndex;
 
+			changeFlag = false;
+
+
+			//////////////////////////////////////////////////
+			//				вывод данных					//
+			//////////////////////////////////////////////////
+
+			// заполнение промежуточного потока для вывода таблицы
+			dataBuffer << mTemps.tableSeparatorHorizontal << "\n" << mTemps.tableHeader << "\n" << mTemps.tableSeparatorHorizontal << "\n";
+			for (int32_t uIndex = dataViewIndBeg; uIndex <= (dataViewIndBeg + dataViewIndCount - IND_CONV_FACTOR); ++uIndex) {
+				u_int printInd;
+				if (dataViewIndBeg != 0 && dataPage != dataPageCount) {
+					printInd = (uIndex % dataViewIndCount) + 1;
+				}
+				else if (dataPage == dataPageCount) {
+					printInd = uIndex - (DATA_FIELD_LENGTH * (dataPageCount - 1)) + 1;
+				}
+				else {
+					printInd = uIndex + 1;
+				}
+
+				dataBuffer << insCurPosFnc(mTemps.space, vertPos, mTemps, LEVEL_VIEW, printInd)
+					<< mTemps.tableSeparatorVertical << setw(COUNTER_FIELD_WIDTH) << right << uIndex + 1 << mTemps.tableSeparatorVertical
+					<< setw(FIRST_NAME_FIELD_WIDTH) << left << usersData[uIndex].getFirstName() << mTemps.tableSeparatorVertical
+					<< setw(LAST_NAME_FIELD_WIDTH) << usersData[uIndex].getLastName() << mTemps.tableSeparatorVertical
+					<< setw(MATCH_SCORE_FIELD_WIDTH) << right << usersData[uIndex].getMathScore() << mTemps.tableSeparatorVertical
+					<< setw(RU_SCORE_FIELD_WIDTH) << right << usersData[uIndex].getRuLangScore() << mTemps.tableSeparatorVertical
+					<< setw(EN_SCORE_FIELD_WIDTH) << right << usersData[uIndex].getEnLangScore() << mTemps.tableSeparatorVertical
+					<< setw(TOTAL_SCORE_FIELD_WIDTH) << right << usersData[uIndex].getTotalScore() << mTemps.tableSeparatorVertical << "\n"
+					<< mTemps.tableSeparatorHorizontal << "\n";
+
+			}
 		}
+		else
+		{
+			if (prevDataPage != dataPage || changeFlag) {
+				// установка индексов вывода
+				dataViewIndCount = DATA_FIELD_LENGTH;
+				dataViewIndBeg = (dataCount - (dataPage - IND_CONV_FACTOR) * dataViewIndCount) - IND_CONV_FACTOR;
+
+				// проверка длины вывода для последних страниц
+				if ( (int32_t(dataViewIndBeg) - int32_t(dataViewIndCount) + IND_CONV_FACTOR) < 0) {
+					dataViewIndCount = (dataCount % DATA_FIELD_LENGTH);
+				}
+
+				findCurPosFnc2(dataPage, vertPos, dataPageCount, dataViewIndCount);
+
+				prevDataPage = dataPage;
+			}
+
+			// нахождение количества страниц
+			if (dataCount % DATA_FIELD_LENGTH == 0) {
+				dataPageCount = dataCount / DATA_FIELD_LENGTH;
+			}
+			else if (dataCount % DATA_FIELD_LENGTH != 0 && dataCount > DATA_FIELD_LENGTH) {
+				dataPageCount = dataCount / DATA_FIELD_LENGTH;
+				++dataPageCount;
+			}
+			else {
+				dataPageCount = 1;
+			}
+
+			changeFlag = false;
+
+
+			//////////////////////////////////////////////////
+			//				вывод данных					//
+			//////////////////////////////////////////////////
+
+			// заполнение промежуточного потока для вывода таблицы
+			printInd = 0;
+			dataBuffer << mTemps.tableSeparatorHorizontal << "\n" << mTemps.tableHeader << "\n" << mTemps.tableSeparatorHorizontal << "\n";
+			for (int32_t uIndex = dataViewIndBeg; uIndex > int32_t(dataViewIndBeg) - int32_t(dataViewIndCount); --uIndex) {
+				++printInd;
+
+				dataBuffer << insCurPosFnc(mTemps.space, vertPos, mTemps, LEVEL_VIEW, printInd)
+					<< mTemps.tableSeparatorVertical << setw(COUNTER_FIELD_WIDTH) << right << uIndex + 1 << mTemps.tableSeparatorVertical
+					<< setw(FIRST_NAME_FIELD_WIDTH) << left << usersData[uIndex].getFirstName() << mTemps.tableSeparatorVertical
+					<< setw(LAST_NAME_FIELD_WIDTH) << usersData[uIndex].getLastName() << mTemps.tableSeparatorVertical
+					<< setw(MATCH_SCORE_FIELD_WIDTH) << right << usersData[uIndex].getMathScore() << mTemps.tableSeparatorVertical
+					<< setw(RU_SCORE_FIELD_WIDTH) << right << usersData[uIndex].getRuLangScore() << mTemps.tableSeparatorVertical
+					<< setw(EN_SCORE_FIELD_WIDTH) << right << usersData[uIndex].getEnLangScore() << mTemps.tableSeparatorVertical
+					<< setw(TOTAL_SCORE_FIELD_WIDTH) << right << usersData[uIndex].getTotalScore() << mTemps.tableSeparatorVertical << "\n"
+					<< mTemps.tableSeparatorHorizontal << "\n";
+
+
+			}
+		}
+
 
 		dataBuffer << mTemps.tablePage << setw(PAGE_FIELD_WIDTH) << right << dataPage << mTemps.tablePageSeparator <<
 						left << dataPageCount << "\n";
@@ -319,16 +377,20 @@ void PrintTable(std::string dir, my::Array& usersData, const MenuTemplates& mTem
 		// обработка клавиш
 		codeState = buttReadFnc(dataPage, vertPos);
 		findCurPosFnc2(dataPage, vertPos, dataPageCount, dataViewIndCount);
-
+		if (!invertedFlag) {
+			changeInd = ((dataPage - 1) * DATA_FIELD_LENGTH) + vertPos - IND_CONV_FACTOR;
+		}
+		else
+		{
+			changeInd = dataCount  - (((dataPage - 1) * DATA_FIELD_LENGTH) + vertPos);
+		}
+		
 		switch (codeState)
 		{
 		case KEY_DELETE: // удаление эл. из базы
-			changeInd = ((dataPage - 1) * DATA_FIELD_LENGTH) + vertPos - IND_CONV_FACTOR;
 			usersData.del(changeInd);
-			//delFromBinFileFnc(dir, ((dataPage - 1) * DATA_FIELD_LENGTH) + vertPos - IND_CONV_FACTOR,
-			//	dataCount, writeInBinFileFnc);
 
-			if (vertPos == dataViewIndCount && dataPage == dataPageCount) {
+			if (vertPos == dataViewIndCount && dataPage == dataPageCount && vertPos == VERTICAL_BEGIN_POINT) {
 				--vertPos;
 			}
 
@@ -344,7 +406,6 @@ void PrintTable(std::string dir, my::Array& usersData, const MenuTemplates& mTem
 		case KEY_ENTER: // изменение эл в базе
 			system("cls");
 
-			changeInd = ((dataPage - 1) * DATA_FIELD_LENGTH) + vertPos - IND_CONV_FACTOR;
 			cout << "\t\t\t\t редактируемая учетная запись \n"
 				<< mTemps.tableSeparatorHorizontal << " " << mTemps.cursor << mTemps.tableSeparatorVertical
 				<< setw(COUNTER_FIELD_WIDTH) << right << dataViewIndBeg + vertPos << mTemps.tableSeparatorVertical
@@ -360,15 +421,13 @@ void PrintTable(std::string dir, my::Array& usersData, const MenuTemplates& mTem
 
 			userInputFnc(changeUser);
 			usersData[changeInd] = changeUser;
-			//changeInBinFileFnc(dir, ((dataPage - 1) * DATA_FIELD_LENGTH) + vertPos - IND_CONV_FACTOR,
-			//	dataCount, changeUser, writeInBinFileFnc);
 
 			changeFlag = true;
 			break;
 
 		case KEY_OTHER: // добваление данных
 			system("cls");
-			changeInd = ((dataPage - 1) * DATA_FIELD_LENGTH) + vertPos - IND_CONV_FACTOR;
+			
 			offset = !selMenuPrintingFnc(dataBuffer.str() + "добавлениь на место куказанной учетной записи? иначе на место выше",
 				insCurPosFnc, buttReadFnc, findCurPosFnc1);
 
@@ -401,16 +460,22 @@ void PrintTable(std::string dir, my::Array& usersData, const MenuTemplates& mTem
 			cout << "\n\t\t введите новые данные: ";
 
 			userInputFnc(changeUser);
-			//appInBinFileFnc(dir, ((dataPage - 1) * DATA_FIELD_LENGTH) + vertPos - IND_CONV_FACTOR, offset,
-			//	dataCount, changeUser, writeInBinFileFnc);
-
-			if (offset && changeInd == dataCount - IND_CONV_FACTOR) // выбор метса записи
-				usersData.pushBack(changeUser);
-			else if(offset)
-				usersData.append(changeInd + 1, changeUser);
-			else
-				usersData.append(changeInd, changeUser);
-
+			if (!invertedFlag) {
+				if (offset && changeInd == dataCount - IND_CONV_FACTOR) // выбор метса записи
+					usersData.pushBack(changeUser);
+				else if (offset)
+					usersData.append(changeInd + 1, changeUser);
+				else
+					usersData.append(changeInd, changeUser);
+			}
+			else {
+				if (!offset && changeInd == dataCount - IND_CONV_FACTOR) // выбор метса записи
+					usersData.pushBack(changeUser);
+				else if (!offset)
+					usersData.append(changeInd + 1, changeUser);
+				else
+					usersData.append(changeInd, changeUser);
+			}
 			++dataCount;
 			changeFlag = true;
 			break;
