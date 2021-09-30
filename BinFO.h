@@ -23,9 +23,6 @@ enum DataBuffersSize {
 using readingBinaryFileFnc = bool(*)(const std::string& dir, my::Array& usersData);
 using writeInBinaryFileFnc = bool(*)(const std::string& dir, my::Array& usersData);
 
-// функция автозаполнения файла
-void CreateRandomBinDataset(std::string dir);
-
 // функция чтения файла
 bool ReadingBinaryFile(const std::string& dir, my::Array& usersData);
 // функция записи в файл

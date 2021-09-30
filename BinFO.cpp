@@ -5,51 +5,6 @@
 #include <random>
 
 
-// функция автозаполнения файла
-void CreateRandomBinDataset(std::string dir)
-{
-	using namespace std;
-	using std::cout;
-	random_device rd;
-	mt19937 mersenne(rd());
-
-	uint16_t size;
-	cout << "количество учетных записей: ";
-	cin >> size;
-	string firstNames[] = { "Иван", "Пётр", "Василий", "Марат", "Григорий",
-		"Ильназ", "Али", "Максим", "Артём", "Джек" };
-	string lastNames[] = { "Иванов", "Пётров", "Васильевич", "Айзатов",
-		"Шайхутдинов", "Кларксон", "Ахматович", "Белых", "Понасенков", "Хабибулин" };
-	
-	my::Account users;
-	uint16_t buffer;
-	ofstream outBinFile(dir, ios::binary);
-	for (u_int i = 0; i < size; i++) {
-		users.setFirstName( firstNames[mersenne() % 10].c_str());
-		users.setLastName(lastNames[mersenne() % 10].c_str());
-		users.setMathScore(mersenne() % 101);
-		users.setRuLangScore(mersenne() % 101);
-		users.setEnLangScore(mersenne() % 101);
-
-		outBinFile.write(users.getFirstNameChar(), sizeof(*users.getFirstNameChar()) * my::LENGTH_FIRST_NAME);
-		outBinFile.write(users.getLastNameChar(), sizeof(*users.getFirstNameChar()) * my::LENGTH_LAST_NAME);
-		
-		buffer = users.getMathScore();
-		outBinFile.write(reinterpret_cast<char*>(&buffer), sizeof(users.getMathScore()));
-		buffer = users.getRuLangScore();
-		outBinFile.write(reinterpret_cast<char*>(&buffer), sizeof(users.getRuLangScore()));
-		buffer = users.getEnLangScore();
-		outBinFile.write(reinterpret_cast<char*>(&buffer), sizeof(users.getEnLangScore()));
-
-		//cout << i + 1 << " " << setw(FIRST_NAME_FIELD_WIDTH) << users.firstName << " " << setw(LAST_NAME_FIELD_WIDTH) 
-		//	<< users.lastName << " " << setw(MATCH_SCORE_FIELD_WIDTH) << users.mathScore <<
-		//	" " << setw(RU_SCORE_FIELD_WIDTH) << users.ruLangScore << " " << setw(EN_SCORE_FIELD_WIDTH) << users.enLangScore << endl;
-	}
-	outBinFile.close();
-	cout << "END" << endl;
-	system("pause");
-}
-
 // функция чтения файла
 bool ReadingBinaryFile(const std::string& dir, my::Array& usersData)
 {

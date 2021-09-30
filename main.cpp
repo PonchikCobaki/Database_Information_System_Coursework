@@ -25,28 +25,28 @@ int main(int argc, char* argv[])
 	setlocale(LC_ALL, "ru");
 
 	// выбор пути файла
-	//string path;
-	string path = "random_data.bin";	//to do dbg
-	/*if (argc > 1) {
+	string path;
+
+	if (argc > 1) {
 		path = argv[1];
 	}
 	else {
 		cout << "введите путь и название файла: ";
 		getline(cin, path);
-	}*/
+	}
 
 	// установка нормативных баллов
 	uint16_t passingScore = 100;
 	uint16_t minMathScore = 0, minRuLangScore = 0, minEnLangScore = 0;
 
-	//cout << "введите сумму проходных баллов: ";
-	//cin >> passingScore;
-	//cout << "введите минимальное значение баллов по матаметике: ";
-	//cin >> minMathScore;
-	//cout << "введите минимальное значение баллов по русскому языку: ";
-	//cin >> minRuLangScore;
-	//cout << "введите минимальное значение баллов по английскому: ";
-	//cin >> minEnLangScore;
+	cout << "введите сумму проходных баллов: ";
+	cin >> passingScore;
+	cout << "введите минимальное значение баллов по матаметике: ";
+	cin >> minMathScore;
+	cout << "введите минимальное значение баллов по русскому языку: ";
+	cin >> minRuLangScore;
+	cout << "введите минимальное значение баллов по английскому: ";
+	cin >> minEnLangScore;
 
 	//	основные переменные 
 	my::Array Exam;			//	контейнер для неупорядоченного хранения данных пользователя в памяти
@@ -55,7 +55,6 @@ int main(int argc, char* argv[])
 	bool	exitFlag = false;	//	флаг выхода из программы 
 	short	codeItem(0);		//	состояние клавиатуры
 
-	CreateRandomBinDataset(path);
 	exitFlag = ReadingBinaryFile(path, Exam);
 
 	if (exitFlag) {
