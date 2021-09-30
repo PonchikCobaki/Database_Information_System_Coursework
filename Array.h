@@ -30,6 +30,7 @@ namespace my {
 
 
 		Account& operator[] (const long int id);
+		Array& reverse();
 
 		Array& append(const u_int id, const Account& user);
 		Array& pushBack(const Account& user);

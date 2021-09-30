@@ -66,4 +66,16 @@ int main()
         std::cout << Exam[i].getEnLangScore() << " ";
         std::cout << Exam[i].getTotalScore() << std::endl;
     }
+
+    Exam.reverse();
+    cout << "reverse" << endl;
+    for (short i = 0; i < Exam.getSize(); ++i) {
+        cout << "№" << i << endl;
+        std::cout << "Имя: " << Exam[i].getFirstName() << " ";
+        std::cout << "Фамилия: " << Exam[i].getLastName() << " ";
+        std::cout << Exam[i].getMathScore() << " ";
+        std::cout << Exam[i].getRuLangScore() << " ";
+        std::cout << Exam[i].getEnLangScore() << " ";
+        std::cout << Exam[i].getTotalScore() << std::endl;
+    }
 }

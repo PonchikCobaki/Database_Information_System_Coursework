@@ -73,6 +73,16 @@ Account& Array::operator[] (const long int id) {
 	}
 }
 
+Array& Array::reverse() {
+	Account buffer;
+	for (u_int i = 0; i < m_members / 2; ++i) {
+		buffer = m_array[i];
+		m_array[i] = m_array[m_members - 1 - i];
+		m_array[m_members - 1 - i] = buffer;
+	}
+	return *this;
+}
+
 Array& Array::append(const u_int id, const Account& user) {
 	try {
 		if (id > m_members) {
@@ -122,7 +132,6 @@ Array& Array::clear() {
 	m_array = new Account[m_size];
 	return *this;
 }
-
 
 u_int Array::getSize() {
 	return m_members;
