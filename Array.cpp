@@ -4,14 +4,14 @@
 using namespace my;
 
 void Array::m_defaultExtend(Account* oldArray) {
-	m_size = m_members + 1 + DEFAULT_ARRAY_EXTEND;
-	Account* bufferArray = new Account[m_size];
+	m_size = m_members + 1 + DEFAULT_ARRAY_EXTEND; // расширение элементов
+	Account* bufferArray = new Account[m_size];	// рассширенный массив буффер для перезаписи
 	for (u_int i(0); i < m_members; ++i)
-		bufferArray[i] = m_array[i];
-
+		bufferArray[i] = m_array[i];	// перезапись элементов в буфер
+	// очистка старого массива
 	if (m_array)
 		delete[] m_array;
-
+	// присвоение нового массива
 	m_array = bufferArray;
 }
 
@@ -56,6 +56,7 @@ Array::~Array()
 
 
 Account& Array::operator[] (const long int id) {
+	// проверка на выход из доступного диапазона
 	try {
 		if ((id >= long int(m_members) || -id < -long int(m_members)) && m_members != 0) {
 			throw "\nindex out of range: ";
@@ -64,6 +65,7 @@ Account& Array::operator[] (const long int id) {
 		if (id >= 0)
 			return m_array[id];
 		else
+			// вывод в обратном порядке
 			return m_array[id + m_members];
 	}
 	catch (const char* str) {
@@ -73,22 +75,14 @@ Account& Array::operator[] (const long int id) {
 	}
 }
 
-Array& Array::reverse() {
-	Account buffer;
-	for (u_int i = 0; i < m_members / 2; ++i) {
-		buffer = m_array[i];
-		m_array[i] = m_array[m_members - 1 - i];
-		m_array[m_members - 1 - i] = buffer;
-	}
-	return *this;
-}
 
 Array& Array::append(const u_int id, const Account& user) {
+	// проверка на выход из доступного диапазона
 	try {
 		if (id > m_members) {
 			throw "\nindex out of range: ";
 		}
-		m_move(id);
+		m_move(id);	// добавление элемента сдвигом
 		m_array[id] = user;
 		++m_members;
 	}
@@ -101,17 +95,19 @@ Array& Array::append(const u_int id, const Account& user) {
 }
 
 Array& Array::pushBack(const Account& user) {
-	m_move(m_members);
+	m_move(m_members);	// добавление в конец сдвигом
 	m_array[m_members] = user;
 	++m_members;
 	return *this;
 }
 
 Array& Array::del(const u_int id) {
+	// проверка на выход из доступного диапазона
 	try {
 		if (id >= m_members) {
 			throw "\nindex out of range: ";
 		}
+		// удаление сдвигом
 		m_move(id, true);
 		--m_members;
 	}
@@ -123,10 +119,22 @@ Array& Array::del(const u_int id) {
 	return *this;
 }
 
+Array& Array::reverse() {
+	Account buffer;
+	for (u_int i = 0; i < m_members / 2; ++i) {
+		buffer = m_array[i];
+		m_array[i] = m_array[m_members - 1 - i];
+		m_array[m_members - 1 - i] = buffer;
+	}
+	return *this;
+}
+
 Array& Array::clear() {
+	// очистка старого массива
 	if (m_array) {
 		delete[] m_array;
 	}
+	// создание нового массива
 	m_members = 0;
 	m_size = DEFAULT_ARRAY_EXTEND;
 	m_array = new Account[m_size];
